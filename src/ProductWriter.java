@@ -1,6 +1,8 @@
 import java.io.BufferedWriter;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -36,7 +38,9 @@ public class ProductWriter
 
         try
         {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(fileName));
+            Path filePath = Paths.get(fileName);
+
+            BufferedWriter writer = Files.newBufferedWriter(filePath);
 
             for(String product : products)
             {
