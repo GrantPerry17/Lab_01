@@ -1,4 +1,5 @@
 import javax.swing.JFileChooser;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,24 +33,18 @@ public class PersonReader
             }
         }
 
-        // If the user cancels and chooses N, end the program normally.
         if(filePath == null)
         {
             return;
         }
+
+        ArrayList<Person> persons = new ArrayList<>();
 
         try
         {
             BufferedReader reader = Files.newBufferedReader(filePath);
 
             String line;
-
-            System.out.println();
-
-            System.out.println(String.format("%-8s %-12s %-14s %-10s %s",
-                    "ID#", "Firstname", "Lastname", "Title", "YOB"));
-
-            System.out.println("================================================");
 
             while((line = reader.readLine()) != null)
             {
@@ -59,13 +54,31 @@ public class PersonReader
                 String firstName = fields[1].trim();
                 String lastName = fields[2].trim();
                 String title = fields[3].trim();
-                String yearOfBirth = fields[4].trim();
+                int yearOfBirth = Integer.parseInt(fields[4].trim());
 
-                System.out.println(String.format("%-8s %-12s %-14s %-10s %s",
-                        id, firstName, lastName, title, yearOfBirth));
+                Person person = new Person(firstName, lastName, id, title, yearOfBirth);
+
+                persons.add(person);
             }
 
             reader.close();
+
+            System.out.println();
+
+            System.out.println(String.format("%-8s %-12s %-14s %-10s %s",
+                    "ID#", "Firstname", "Lastname", "Title", "YOB"));
+
+            System.out.println("================================================");
+
+            for(Person person : persons)
+            {
+                System.out.println(String.format("%-8s %-12s %-14s %-10s %s",
+                        person.getID(),
+                        person.getFirstName(),
+                        person.getLastName(),
+                        person.getTitle(),
+                        person.getYOB()));
+            }
         }
         catch(IOException e)
         {

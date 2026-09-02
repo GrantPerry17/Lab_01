@@ -1,4 +1,5 @@
 import javax.swing.JFileChooser;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -32,24 +33,18 @@ public class ProductReader
             }
         }
 
-        // If the user cancels and chooses N, end the program normally.
         if(filePath == null)
         {
             return;
         }
+
+        ArrayList<Product> products = new ArrayList<>();
 
         try
         {
             BufferedReader reader = Files.newBufferedReader(filePath);
 
             String line;
-
-            System.out.println();
-
-            System.out.println(String.format("%-8s %-15s %-30s %-10s",
-                    "ID#", "Name", "Description", "Cost"));
-
-            System.out.println("================================================================");
 
             while((line = reader.readLine()) != null)
             {
@@ -60,11 +55,28 @@ public class ProductReader
                 String description = fields[2].trim();
                 double cost = Double.parseDouble(fields[3].trim());
 
-                System.out.println(String.format("%-8s %-15s %-30s %.2f",
-                        id, name, description, cost));
+                Product product = new Product(name, description, id, cost);
+
+                products.add(product);
             }
 
             reader.close();
+
+            System.out.println();
+
+            System.out.println(String.format("%-8s %-15s %-30s %-10s",
+                    "ID#", "Name", "Description", "Cost"));
+
+            System.out.println("================================================================");
+
+            for(Product product : products)
+            {
+                System.out.println(String.format("%-8s %-15s %-30s %.2f",
+                        product.getID(),
+                        product.getName(),
+                        product.getDescription(),
+                        product.getCost()));
+            }
         }
         catch(IOException e)
         {

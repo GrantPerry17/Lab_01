@@ -12,7 +12,7 @@ public class PersonGenerator
     {
         Scanner in = new Scanner(System.in);
 
-        ArrayList<String> persons = new ArrayList<>();
+        ArrayList<Person> persons = new ArrayList<>();
 
         boolean morePersons;
 
@@ -22,11 +22,11 @@ public class PersonGenerator
             String firstName = SafeInput.getNonZeroLenString(in, "Enter First Name");
             String lastName = SafeInput.getNonZeroLenString(in, "Enter Last Name");
             String title = SafeInput.getNonZeroLenString(in, "Enter Title");
-            int yearOfBirth = SafeInput.getInt(in, "Enter Year of Birth");
+            int yearOfBirth = SafeInput.getRangedInt(in, "Enter Year of Birth", 1940, 2010);
 
-            String personRecord = id + ", " + firstName + ", " + lastName + ", " + title + ", " + yearOfBirth;
+            Person person = new Person(firstName, lastName, id, title, yearOfBirth);
 
-            persons.add(personRecord);
+            persons.add(person);
 
             morePersons = SafeInput.getYNConfirm(in, "Enter another person?");
         } while(morePersons);
@@ -39,9 +39,9 @@ public class PersonGenerator
 
             BufferedWriter writer = Files.newBufferedWriter(filePath);
 
-            for(String person : persons)
+            for(Person person : persons)
             {
-                writer.write(person);
+                writer.write(person.toCSV());
                 writer.newLine();
             }
 

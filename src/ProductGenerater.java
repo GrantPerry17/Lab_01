@@ -6,33 +6,30 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class ProductWriter
+public class ProductGenerater
 {
     public static void main(String[] args)
     {
         Scanner in = new Scanner(System.in);
 
-        ArrayList<String> products = new ArrayList<>();
+        ArrayList<Product> products = new ArrayList<>();
 
         boolean moreProducts;
 
         do
         {
             String id = SafeInput.getNonZeroLenString(in, "Enter Product ID");
-
             String name = SafeInput.getNonZeroLenString(in, "Enter Product Name");
-
             String description = SafeInput.getNonZeroLenString(in, "Enter Product Description");
-
             double cost = SafeInput.getDouble(in, "Enter Product Cost");
 
-            String productRecord = id + ", " + name + ", " + description + ", " + cost;
+            Product product = new Product(name, description, id, cost);
 
-            products.add(productRecord);
+            products.add(product);
 
             moreProducts = SafeInput.getYNConfirm(in, "Enter another product?");
-
-        } while(moreProducts);
+        }
+        while(moreProducts);
 
         String fileName = SafeInput.getNonZeroLenString(in, "Enter file name");
 
@@ -42,9 +39,9 @@ public class ProductWriter
 
             BufferedWriter writer = Files.newBufferedWriter(filePath);
 
-            for(String product : products)
+            for(Product product : products)
             {
-                writer.write(product);
+                writer.write(product.toCSV());
                 writer.newLine();
             }
 
